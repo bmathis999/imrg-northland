@@ -1,0 +1,33 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "imrg-northland",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Self-reference used by the adapter for caching. Must match "name" above.
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "imrg-northland"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      // Page cache. Create it with:  npx wrangler kv namespace create NEXT_INC_CACHE_KV
+      // then paste the id it prints here.
+      "binding": "NEXT_INC_CACHE_KV",
+      "id": "ed231705b8a04d16994cbf82157941d3"
+    }
+  ],
+  // Public, non-secret settings. Secrets (service-role key, Turnstile secret,
+  // Resend key) are added with `npx wrangler secret put NAME`, never in this file.
+  "vars": {
+    "NEXT_PUBLIC_SITE_URL": "https://northlandimrg.com",
+    "NOTIFY_EMAIL": "info@northlandimrg.com"
+  },
+  "observability": { "enabled": true }
+}
